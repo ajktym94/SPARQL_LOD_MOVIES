@@ -37,9 +37,6 @@ def get_dbpedia_link(title):
 def get_director(title):
     db_link = get_dbpedia_link(title)
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?remote_value
             WHERE {
                     <'''+db_link+'''> dbp:director ?remote_value
@@ -61,9 +58,6 @@ def get_director(title):
 def get_budget(director):
     try:
         query = '''
-                PREFIX owl: <http://www.w3.org/2002/07/owl#>
-                PREFIX movie: <https://www.imdb.com/>
-
                 SELECT ?budget
                 WHERE {
                         ?movie dbo:director <'''+director+'''> .
@@ -104,9 +98,6 @@ def get_avg_budget(director):
 
 def get_coactors(link):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?remote_value
             WHERE {
                     <'''+link+'''> dbo:starring ?remote_value .
@@ -128,9 +119,6 @@ def get_coactors(link):
 
 def get_coactors_movies(actors):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?film
             WHERE {
                     ?film dbo:starring <'''+actors[0]['remote_value']['value']+'''> .
@@ -153,9 +141,6 @@ def get_coactors_movies(actors):
 
 def get_related_movies(db_link):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?remote_value
             WHERE {
                     <'''+db_link+'''> dbo:wikiPageWikiLink ?remote_value
@@ -177,9 +162,6 @@ def get_related_movies(db_link):
 def check_movie(results):
     for result in results:
         query = '''
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX movie: <https://www.imdb.com/>
-
         SELECT ?remote_value
         WHERE {
                 <'''+result['remote_value']['value']+'''> rdf:type ?remote_value
@@ -192,9 +174,6 @@ def check_movie(results):
         for rv in output['results']['bindings']:
             if rv['remote_value']['value'] == 'http://dbpedia.org/ontology/Film':
                         query = '''
-                                PREFIX owl: <http://www.w3.org/2002/07/owl#>
-                                PREFIX movie: <https://www.imdb.com/>
-
                                 SELECT ?remote_value
                                 WHERE {
                                         <'''+result['remote_value']['value']+'''> dbp:name ?remote_value
@@ -215,9 +194,6 @@ def check_movie(results):
 
 def get_crew(link):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?dir ?dop ?comp ?music ?screen ?prod group_concat(?star; separator=",")
             WHERE {
                     <'''+link+'''> dbo:director ?dir .
@@ -241,8 +217,6 @@ def get_crew(link):
 
 def get_youngest(links):
     query = '''
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX movie: <https://www.imdb.com/>
         SELECT ?bd ?name WHERE
         {
         {SELECT ?bd ?name
@@ -278,9 +252,6 @@ def get_longest_movie(link):
 #     print(actor)
 #     try:
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?runtime ?name
             WHERE {
                     ?movie dbo:starring <'''+actor+'''> .
@@ -303,9 +274,6 @@ def get_longest_movie(link):
 
 def get_movie_name(link):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?remote_value
             WHERE {
                     <'''+link+'''> dbp:name ?remote_value
@@ -323,9 +291,6 @@ def get_movie_name(link):
 
 def get_actor_name(link):
     query = '''
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX movie: <https://www.imdb.com/>
-
             SELECT ?remote_value
             WHERE {
                     <'''+link+'''> dbp:name ?remote_value
