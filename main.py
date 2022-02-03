@@ -285,7 +285,6 @@ Output: Longest movie
 def get_longest_movie(link):
     actor = get_coactors(link)[0]['remote_value']['value']
     actor_name = get_actor_name(actor)
-#     print(actor)
 #     try:
     query = '''
             SELECT ?runtime ?name
@@ -350,12 +349,13 @@ if __name__=="__main__":
     menu = '''
     MENU
     1. Get related movies
-    2. Get average budget of other movies of a particular movie's director
+    2. Get average budget of all movies of a particular movie's director
     3. Get other movies where the coactors of a particular movie acted together 
     4. Get youngest main crew member of a movie
     5. Get the longest movie of a movie's top actor
     '''
     print(menu)
+
     choice = input("Enter your choice: ")
     if choice == "1":
         title = input("\nEnter the movie name:")
@@ -392,7 +392,6 @@ if __name__=="__main__":
         title = input("\nEnter the movie name:")
         link = get_dbpedia_link(title)
         get_longest_movie(link)
-
     else:
         print("Sorry! Invalid Choice")
 
