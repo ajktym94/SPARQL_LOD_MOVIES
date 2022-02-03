@@ -5,14 +5,18 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from rdflib import URIRef, BNode, Literal, Namespace, Graph
 from rdflib.namespace import FOAF, DCTERMS, XSD, RDF, SDO, OWL
 
+######################################################################################################################
+
 # Load RDF file
 g = Graph()
 g.parse("movie.owl")
 
-# Function to retrieve DBPedia link from title
-# Input: Title
-# Output: DBpedia link
-
+######################################################################################################################
+'''
+Function to retrieve DBPedia link from title
+Input: Title
+Output: DBpedia link
+'''
 def get_dbpedia_link(title):
     query = '''
             PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -30,9 +34,13 @@ def get_dbpedia_link(title):
         break
     return db_link
 
-# Function to retrieve Director's name from movie title
-# Input: Title
-# Output: Director's name
+######################################################################################################################
+
+'''
+Function to retrieve Director's name from movie title
+Input: Title
+Output: Director's name
+'''
 
 def get_director(title):
     db_link = get_dbpedia_link(title)
@@ -51,10 +59,13 @@ def get_director(title):
     except:
         print("Sorry, no results")
 
-# Function to retrieve a Director's list of budgets from his/her URI
-# Input: Director's URI
-# Output: Director's budget list
 
+######################################################################################################################
+'''
+Function to retrieve a Director's list of budgets from his/her URI
+Input: Director's URI
+Output: Director's budget list
+'''
 def get_budget(director):
     try:
         query = '''
@@ -72,9 +83,13 @@ def get_budget(director):
     except:
         print("Sorry! no results")
 
-# Function to calculate average budget from a list of budgets
-# Input: Director's URI
-# Output: Director's average budget
+
+######################################################################################################################
+'''
+Function to calculate average budget from a list of budgets
+Input: Director's URI
+Output: Director's average budget
+'''
 
 def get_avg_budget(director):
     result = get_budget(director)
@@ -92,9 +107,13 @@ def get_avg_budget(director):
     except:
         print("Sorry! No results")
 
-# Function to retrieve a movie's actors
-# Input: Movie's URI
-# Output: Movie's actors
+
+######################################################################################################################
+'''
+Function to retrieve a movie's actors
+Input: Movie's URI
+Output: Movie's actors
+'''
 
 def get_coactors(link):
     query = '''
@@ -113,9 +132,12 @@ def get_coactors(link):
     except:
         print("Sorry, no results")
 
-# Function to retrieve the movies in which the 2 top actors acted together
-# Input: Actors list
-# Output: Movies in which the top 2 actors acted together
+######################################################################################################################
+'''
+Function to retrieve the movies in which the 2 top actors acted together
+Input: Actors list
+Output: Movies in which the top 2 actors acted together
+'''
 
 def get_coactors_movies(actors):
     query = '''
@@ -135,9 +157,12 @@ def get_coactors_movies(actors):
     except:
         print("Sorry, no results")
 
-# Function to retrieve a movie's related links
-# Input: Movie's URI
-# Output: Related links
+######################################################################################################################
+'''
+Function to retrieve a movie's related links
+Input: Movie's URI
+Output: Related links
+'''
 
 def get_related_movies(db_link):
     query = '''
@@ -155,9 +180,12 @@ def get_related_movies(db_link):
     except:
         print("Sorry, no results")
 
-# Function to check if a related item is a movie or not
-# Input: Results from get_related_movies()
-# Output: List of movies
+######################################################################################################################
+'''
+Function to check if a related item is a movie or not
+Input: Results from get_related_movies()
+Output: List of movies
+'''
 
 def check_movie(results):
     for result in results:
@@ -188,9 +216,12 @@ def check_movie(results):
                         except:
                             continue
 
-# Function to retrieve the main crew members of a movie
-# Input: Movie's URI
-# Output: List of main crew members
+######################################################################################################################
+'''
+Function to retrieve the main crew members of a movie
+Input: Movie's URI
+Output: List of main crew members
+'''
 
 def get_crew(link):
     query = '''
@@ -208,12 +239,14 @@ def get_crew(link):
     sparql.setQuery(query)
     sparql.setReturnFormat(JSON)
     crew = sparql.query().convert()
-#     print(crew) 
     return crew
 
-# Function to find the youngest crew member
-# Input: List of the URIs of the crew
-# Output: Youngest crew member and his/her DOB
+######################################################################################################################
+'''
+Function to find the youngest crew member
+Input: List of the URIs of the crew
+Output: Youngest crew member and his/her DOB
+'''
 
 def get_youngest(links):
     query = '''
@@ -242,9 +275,12 @@ def get_youngest(links):
     movie_name = sparql.query().convert()
     print("The youngest main crew member is", movie_name['results']['bindings'][0]['name']['value'],"born on", movie_name['results']['bindings'][0]['bd']['value']) 
 
-# Function to retrieve an actor's longest movie
-# Input: Actor's URI
-# Output: Longest movie
+######################################################################################################################
+'''
+Function to retrieve an actor's longest movie
+Input: Actor's URI
+Output: Longest movie
+'''
 
 def get_longest_movie(link):
     actor = get_coactors(link)[0]['remote_value']['value']
@@ -268,9 +304,12 @@ def get_longest_movie(link):
 #     except:
 #         print("Sorry! no results")
 
-# Function to retrieve the movie name from it's URI
-# Input: Movie URI
-# Output: Movie name
+######################################################################################################################
+'''
+Function to retrieve the movie name from it's URI
+Input: Movie URI
+Output: Movie name
+'''
 
 def get_movie_name(link):
     query = '''
@@ -285,9 +324,12 @@ def get_movie_name(link):
     movie_name = sparql.query().convert()
     print(movie_name['results']['bindings'][0]['remote_value']['value']) 
 
-# Function to retrieve an actor's name from his/her URI
-# Input: Actor URI
-# Output: Actor name
+######################################################################################################################
+'''
+Function to retrieve an actor's name from his/her URI
+Input: Actor URI
+Output: Actor name
+'''
 
 def get_actor_name(link):
     query = '''
@@ -301,6 +343,8 @@ def get_actor_name(link):
     sparql.setReturnFormat(JSON)
     actor_name = sparql.query().convert()
     return actor_name['results']['bindings'][0]['remote_value']['value']
+
+######################################################################################################################
 
 if __name__=="__main__":
     menu = '''
@@ -351,3 +395,5 @@ if __name__=="__main__":
 
     else:
         print("Sorry! Invalid Choice")
+
+######################################################################################################################
